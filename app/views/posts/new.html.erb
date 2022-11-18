@@ -1,0 +1,19 @@
+<form action="<%= posts_url %>" method="POST">
+    <label>Title
+        <input type="text" name="post[title]">
+    </label>
+
+    <label>Content
+        <input type="text" name="post[content]">
+    </label>
+    <ul>
+    <% @subs.each do |sub| %>
+        <li>
+            <label><%= sub.title %>
+                <input type="checkbox" name="post[sub_id][]" value="<%= sub.id %>">
+            </label>
+        </li>
+    <% end %>
+    </ul>
+   <button>Submit</button>
+</form>

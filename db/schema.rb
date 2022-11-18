@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_18_174133) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_18_191307) do
+  create_table "post_subs", force: :cascade do |t|
+    t.integer "post_id"
+    t.integer "sub_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_subs_on_post_id"
+    t.index ["sub_id"], name: "index_post_subs_on_sub_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "url"
+    t.string "content"
+    t.integer "sub_id"
+    t.integer "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["sub_id"], name: "index_posts_on_sub_id"
+  end
+
   create_table "subs", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
@@ -28,5 +49,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_18_174133) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "post_subs", "posts"
+  add_foreign_key "post_subs", "subs"
+  add_foreign_key "posts", "subs"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "subs", "users", column: "moderator_id"
 end
