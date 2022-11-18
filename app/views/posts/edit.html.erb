@@ -1,3 +1,4 @@
+<h1>Edit Post</h1>
 <form action="<%= posts_url %>" method="POST">
     <input type="hidden" name="_method" value="patch">
     <label>
@@ -13,7 +14,7 @@
     <% @subs.each do |sub| %>
         <li>
             <label><%= sub.title %>
-                <input type="checkbox" name="post[sub_id][]">
+                <input type="checkbox" name="post[sub_id][]" value="<%= sub.id %>">
             </label>
         </li>
     <% end %>

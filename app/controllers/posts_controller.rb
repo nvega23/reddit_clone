@@ -16,9 +16,11 @@ class PostsController < ApplicationController
 
     def update
         @post = Post.find_by(id: params[:id])
-        #update joins table
         if @post.author_id == current_user.id
             if @post.update(post_params)
+                params[:post][:sub_id].each do |id|
+                    PostSub.update(post_id: @post.id, sub_id: id)
+                end
                 redirect_to users_url
             else
                 flash[:errors] = @post.errors.full_messages
@@ -37,9 +39,11 @@ class PostsController < ApplicationController
 
     def create
         @post = Post.new(post_params)
-        #update joins table
-        debugger
+        @post.url = "posts/" + @post.id.to_s
         if @post.save
+            params[:post][:sub_id].each do |id|
+                PostSub.create(post_id: @post.id, sub_id: id)
+            end
             redirect_to post_url(@post.id)
         else
             flash[:errors] = @post.errors.full_messages
@@ -49,7 +53,7 @@ class PostsController < ApplicationController
 
     private
     def post_params
-        params.require(:post).permit(:title, :url, :content, :sub_id)
+        params.require(:post).permit(:title, :content, :sub_id)
     end
 
 end
